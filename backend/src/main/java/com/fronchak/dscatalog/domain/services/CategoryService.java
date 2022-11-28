@@ -32,4 +32,10 @@ public class CategoryService {
 				.orElseThrow(() -> new EntityNotFoundException("Category not found."));
 		return mapper.convertEntityToDTO(entity);
 	}
+	
+	public CategoryDTO save(CategoryDTO inputDTO) {
+		Category entity = mapper.convertDTOToEntity(inputDTO);
+		entity = repository.save(entity);
+		return mapper.convertEntityToDTO(entity);
+	}
 }
