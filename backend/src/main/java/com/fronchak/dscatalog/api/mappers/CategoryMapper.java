@@ -3,6 +3,7 @@ package com.fronchak.dscatalog.api.mappers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.fronchak.dscatalog.api.dtos.CategoryDTO;
@@ -22,6 +23,11 @@ public class CategoryMapper {
 		return entities.stream()
 				.map(entity -> convertEntityToDTO(entity))
 				.collect(Collectors.toList());
+	}
+	
+	public Page<CategoryDTO> convertEntityPageToDTOPage(Page<Category> entities) {
+		return entities
+				.map(entity -> convertEntityToDTO(entity));
 	}
 	
 	public Category convertDTOToEntity(CategoryDTO dto) {

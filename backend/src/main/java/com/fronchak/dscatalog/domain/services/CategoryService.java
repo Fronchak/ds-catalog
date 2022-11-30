@@ -1,12 +1,12 @@
 package com.fronchak.dscatalog.domain.services;
 
-import java.util.List;
-
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,9 +27,9 @@ public class CategoryService {
 	private CategoryMapper mapper;
 	
 	@Transactional(readOnly = true)
-	public List<CategoryDTO> findAll() {
-		List<Category> entities = repository.findAll();
-		return mapper.convertEntityListToDTOList(entities);
+	public Page<CategoryDTO> findAllPaged(PageRequest pageRequest) {
+		Page<Category> entities = repository.findAll(pageRequest);
+		return mapper.convertEntityPageToDTOPage(entities);
 	}
 	
 	public CategoryDTO findById(Long id) {
