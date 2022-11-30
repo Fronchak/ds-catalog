@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.fronchak.dscatalog.domain.exceptions.EntityNotFoundException;
+import com.fronchak.dscatalog.domain.exceptions.ResourceNotFoundException;
 import com.fronchak.dscatalog.domain.exceptions.ExceptionResponse;
 
 @RestController
 @ControllerAdvice
 public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<ExceptionResponse> handleEntityNotFoundException(EntityNotFoundException e, WebRequest request) {
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<ExceptionResponse> handleResourceNotFoundException(ResourceNotFoundException e, WebRequest request) {
 		ExceptionResponse response = new ExceptionResponse();
 		response.setTimestamp(Instant.now());
 		response.setStatus(HttpStatus.NOT_FOUND.value());
