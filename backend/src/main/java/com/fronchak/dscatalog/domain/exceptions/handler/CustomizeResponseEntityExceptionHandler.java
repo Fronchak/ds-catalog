@@ -11,6 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.fronchak.dscatalog.domain.exceptions.ResourceNotFoundException;
+import com.fronchak.dscatalog.domain.exceptions.DatabaseException;
 import com.fronchak.dscatalog.domain.exceptions.ExceptionResponse;
 
 @RestController
@@ -19,12 +20,25 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
 
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<ExceptionResponse> handleResourceNotFoundException(ResourceNotFoundException e, WebRequest request) {
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		ExceptionResponse response = makeResponse(e, request, status, "Resource not found");
+		return ResponseEntity.status(status).body(response);
+	}
+	
+	private ExceptionResponse makeResponse(Exception e, WebRequest request, HttpStatus status, String error) {
 		ExceptionResponse response = new ExceptionResponse();
 		response.setTimestamp(Instant.now());
-		response.setStatus(HttpStatus.NOT_FOUND.value());
-		response.setError("Entity not found");
+		response.setStatus(status.value());
+		response.setError(error);
 		response.setMessage(e.getMessage());
 		response.setPath(request.getDescription(false));
-		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+		return response;
+	}
+	
+	@ExceptionHandler(DatabaseException.class)
+	public ResponseEntity<ExceptionResponse> handleDatabaseException(DatabaseException e, WebRequest request) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		ExceptionResponse response = makeResponse(e, request, status, "Database error");
+		return ResponseEntity.status(status).body(response);
 	}
 }
