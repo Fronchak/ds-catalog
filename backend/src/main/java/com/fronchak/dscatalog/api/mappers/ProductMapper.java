@@ -30,7 +30,7 @@ public class ProductMapper implements Serializable {
 		return dto;
 	}
 	
-	public ProductDTO convertEntityToDTO(Product entity, Set	<Category> categories) {
+	public ProductDTO convertEntityToDTO(Product entity, Set<Category> categories) {
 		ProductDTO dto = convertEntityToDTO(entity);	
 		categories.forEach(category -> dto.getCategories().add(categoryMapper.convertEntityToDTO(category)));
 		return dto;
