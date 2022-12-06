@@ -6,12 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.Instant;
 import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +31,7 @@ import com.fronchak.dscatalog.api.mappers.ProductMapper;
 import com.fronchak.dscatalog.domain.entities.Product;
 import com.fronchak.dscatalog.domain.exceptions.DatabaseException;
 import com.fronchak.dscatalog.domain.exceptions.ResourceNotFoundException;
+import com.fronchak.dscatalog.domain.repositories.CategoryRepository;
 import com.fronchak.dscatalog.domain.repositories.ProductRepository;
 import com.fronchak.dscatalog.mocks.ProductMockFactory;
 
@@ -45,6 +48,9 @@ public class ProductServiceTest {
 	@Mock
 	private ProductRepository repository;
 	
+	@Mock
+	private CategoryRepository categoryRepository;
+
 	@Mock
 	private ProductMapper mapper;
 	
@@ -84,14 +90,28 @@ public class ProductServiceTest {
 		when(repository.findById(10L)).thenReturn(Optional.of(entity));
 		when(mapper.convertEntityToDTO(entity, entity.getCategories())).thenReturn(dto);
 		
+		ProductDTO expected = ProductMockFactory.mockProductDTO();
 		ProductDTO result = service.findById(10L);
+
+		assertDTOsAreEquals(expected, result);
+	}
+	
+	private void assertDTOsAreEquals(ProductDTO expected, ProductDTO result) {
+		assertEquals(expected.getId(), result.getId());
+		assertEquals(expected.getName(), result.getName());
+		assertEquals(expected.getDescription(), result.getDescription());
+		assertEquals(expected.getImgUrl(), result.getImgUrl());
+		assertEquals(expected.getPrice(), result.getPrice());
+		assertEquals(expected.getDate(), result.getDate());
+	}
+	
+	@Test
+	public void findByIdShouldReturnResourceNotFoundExceptionWhenIdDoesNotExist() {
+		Long invalidId = 1L;
 		
-		assertEquals(0L, result.getId());
-		assertEquals("Mock name 0", result.getName());
-		assertEquals("Mock description 0", result.getDescription());
-		assertEquals("Mock url 0", result.getImgUrl());
-		assertEquals(0.0, result.getPrice());
-		assertEquals(Instant.parse("2000-10-05T12:00:00Z"), result.getDate());
+		when(repository.findById(invalidId)).thenReturn(Optional.empty());
+		
+		assertThrows(ResourceNotFoundException.class, () -> service.findById(invalidId));
 	}
 	
 	@Test
@@ -103,22 +123,51 @@ public class ProductServiceTest {
 		when(mapper.convertPageEntityToPageDTO(products)).thenReturn(dtos);
 		
 		Page<ProductDTO> results = service.findAllPaged(any());
+		
+		ProductDTO expected = ProductMockFactory.mockProductDTO();
 		ProductDTO result = results.getContent().get(0);
 		
-		assertEquals(0L, result.getId());
-		assertEquals("Mock name 0", result.getName());
-		assertEquals("Mock description 0", result.getDescription());
-		assertEquals("Mock url 0", result.getImgUrl());
-		assertEquals(0.0, result.getPrice());
-		assertEquals(Instant.parse("2000-10-05T12:00:00Z"), result.getDate());
+		assertDTOsAreEquals(expected, result);
 		
+		expected = ProductMockFactory.mockProductDTO(3);
 		result = results.getContent().get(3);
 		
-		assertEquals(3L, result.getId());
-		assertEquals("Mock name 3", result.getName());
-		assertEquals("Mock description 3", result.getDescription());
-		assertEquals("Mock url 3", result.getImgUrl());
-		assertEquals(3.0, result.getPrice());
-		assertEquals(Instant.parse("2000-10-05T12:00:00Z"), result.getDate());
+		assertDTOsAreEquals(expected, result);
+	}
+	
+	@Test
+	public void updateShouldReturnProductDTOWhenIdExists() {
+		Long validId = 1L;
+		Product productPersisted = ProductMockFactory.mockProduct();
+		Product updatedProduct = ProductMockFactory.mockProduct(1);
+		ProductDTO inputDTO = ProductMockFactory.mockProductDTO();
+		ProductDTO outputDTO = ProductMockFactory.mockProductDTO(1);
+		
+		
+		when(repository.getReferenceById(validId)).thenReturn(productPersisted);
+		doNothing().when(mapper).convertDTOToEntity(inputDTO, productPersisted);
+		when(repository.save(productPersisted)).thenReturn(updatedProduct);
+		when(mapper.convertEntityToDTO(updatedProduct, updatedProduct.getCategories())).thenReturn(outputDTO);
+		
+		ProductDTO expected = ProductMockFactory.mockProductDTO(1);
+		ProductDTO result = service.update(validId, inputDTO);
+
+		assertDTOsAreEquals(expected, result);
+		verify(repository, times(1)).save(productPersisted);
+		verify(repository, times(1)).getReferenceById(validId);
+		verify(mapper, times(1)).convertDTOToEntity(inputDTO, productPersisted);
+		verify(mapper, times(1)).convertEntityToDTO(updatedProduct, updatedProduct.getCategories());
+	}
+	
+	@Test
+	public void updateShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+		Long invalidId = 1L;
+		ProductDTO dto = ProductMockFactory.mockProductDTO();
+		doThrow(EntityNotFoundException.class).when(repository).getReferenceById(invalidId);
+		
+		assertThrows(ResourceNotFoundException.class, () -> service.update(invalidId, dto));
+		
+		verify(repository, times(1)).getReferenceById(invalidId);
+		verify(repository, never()).save(any());
 	}
 }
