@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fronchak.dscatalog.api.dtos.UserDTO;
+import com.fronchak.dscatalog.api.dtos.UserUpdateDTO;
 import com.fronchak.dscatalog.domain.exceptions.ResourceNotFoundException;
 import com.fronchak.dscatalog.domain.services.UserService;
 import com.fronchak.dscatalog.mocks.UserMocksFactory;
@@ -96,9 +97,9 @@ public class UserControllerTest {
 	
 	@Test
 	public void updateShouldReturnSucessAndDTOWhenIdExists() throws Exception {
-		UserDTO insertDTO = new UserDTO();
+		UserUpdateDTO insertDTO = new UserUpdateDTO();
 		UserDTO dto = UserMocksFactory.mockUserDTO();
-		when(service.update(any(UserDTO.class), eq(VALID_ID))).thenReturn(dto);
+		when(service.update(any(UserUpdateDTO.class), eq(VALID_ID))).thenReturn(dto);
 		
 		String jsonBody = objectMapper.writeValueAsString(insertDTO);
 		
@@ -113,7 +114,7 @@ public class UserControllerTest {
 	
 	@Test
 	public void updateShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
-		when(service.update(any(UserDTO.class), eq(INVALID_ID))).thenThrow(ResourceNotFoundException.class);
+		when(service.update(any(UserUpdateDTO.class), eq(INVALID_ID))).thenThrow(ResourceNotFoundException.class);
 		UserDTO dto = new UserDTO();
 	
 		String jsonPath = objectMapper.writeValueAsString(dto);

@@ -28,6 +28,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fronchak.dscatalog.api.dtos.UserDTO;
 import com.fronchak.dscatalog.api.dtos.UserInsertDTO;
+import com.fronchak.dscatalog.api.dtos.UserUpdateDTO;
 import com.fronchak.dscatalog.api.mappers.UserMapper;
 import com.fronchak.dscatalog.domain.entities.User;
 import com.fronchak.dscatalog.domain.exceptions.ResourceNotFoundException;
@@ -75,7 +76,7 @@ public class UserServiceTest {
 	
 	@Test
 	public void updateShouldReturnDTOWhenIdExists() {
-		UserDTO dto = mockUserDTO();
+		UserUpdateDTO dto = UserMocksFactory.mockUserUpdateDTO();
 		User entity = mockUser();
 		User entityUpdated = mockUser(1);
 		UserDTO dtoUpdated = mockUserDTO(1);
@@ -94,7 +95,7 @@ public class UserServiceTest {
 	
 	@Test
 	void updateShouldThrowResourceNotFoundExpectionWhenIdDoesNotExist() {
-		UserDTO dto = mockUserDTO();
+		UserUpdateDTO dto = UserMocksFactory.mockUserUpdateDTO();
 		when(repository.getReferenceById(INVALID_ID)).thenThrow(EntityNotFoundException.class);
 		
 		assertThrows(ResourceNotFoundException.class, () -> service.update(dto, INVALID_ID));

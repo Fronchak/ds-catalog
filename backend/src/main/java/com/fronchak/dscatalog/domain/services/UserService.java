@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fronchak.dscatalog.api.dtos.RoleDTO;
 import com.fronchak.dscatalog.api.dtos.UserDTO;
 import com.fronchak.dscatalog.api.dtos.UserInsertDTO;
+import com.fronchak.dscatalog.api.dtos.UserUpdateDTO;
 import com.fronchak.dscatalog.api.mappers.UserMapper;
 import com.fronchak.dscatalog.domain.entities.User;
 import com.fronchak.dscatalog.domain.exceptions.ResourceNotFoundException;
@@ -42,7 +43,7 @@ public class UserService {
 	}
 	
 	@Transactional
-	public UserDTO update(UserDTO dto, Long id) {
+	public UserDTO update(UserUpdateDTO dto, Long id) {
 		try {
 			User entity = repository.getReferenceById(id);
 			copyDTOToEntity(dto, entity);

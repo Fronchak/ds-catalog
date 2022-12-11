@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import com.fronchak.dscatalog.api.dtos.RoleDTO;
 import com.fronchak.dscatalog.api.dtos.UserDTO;
 import com.fronchak.dscatalog.api.dtos.UserInsertDTO;
+import com.fronchak.dscatalog.api.dtos.UserUpdateDTO;
 import com.fronchak.dscatalog.domain.entities.Role;
 import com.fronchak.dscatalog.domain.entities.User;
 
@@ -60,6 +61,21 @@ public class UserMocksFactory {
 	
 	public static UserDTO mockUserDTO(int i) {
 		UserDTO mock = new UserDTO();
+		mock.setId(mockId(i));
+		mock.setFirstName(mockFirstName(i));
+		mock.setLastName(mockLastName(i));
+		mock.setEmail(mockEmail(i));
+		Set<RoleDTO> roles = mockRoleDTOSet();
+		roles.forEach(role -> mock.getRoles().add(role));
+		return mock;
+	}
+	
+	public static UserUpdateDTO mockUserUpdateDTO() {
+		return mockUserUpdateDTO(0);
+	}
+	
+	public static UserUpdateDTO mockUserUpdateDTO(int i) {
+		UserUpdateDTO mock = new UserUpdateDTO();
 		mock.setId(mockId(i));
 		mock.setFirstName(mockFirstName(i));
 		mock.setLastName(mockLastName(i));

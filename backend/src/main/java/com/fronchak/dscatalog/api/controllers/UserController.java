@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fronchak.dscatalog.api.dtos.UserDTO;
 import com.fronchak.dscatalog.api.dtos.UserInsertDTO;
+import com.fronchak.dscatalog.api.dtos.UserUpdateDTO;
 import com.fronchak.dscatalog.domain.services.UserService;
 
 @RestController
@@ -44,8 +45,8 @@ public class UserController {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<UserDTO> update(@RequestBody UserDTO dto, @Valid @PathVariable Long id) {
-		dto = service.update(dto, id);
+	public ResponseEntity<UserDTO> update(@Valid @RequestBody UserUpdateDTO updateDTO, @PathVariable Long id) {
+		UserDTO dto = service.update(updateDTO, id);
 		return ResponseEntity.ok().body(dto);
 	}
 	
