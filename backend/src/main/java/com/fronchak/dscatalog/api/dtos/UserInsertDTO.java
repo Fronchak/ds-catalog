@@ -1,5 +1,8 @@
 package com.fronchak.dscatalog.api.dtos;
 
+import com.fronchak.dscatalog.domain.services.validations.UserInsertValid;
+
+@UserInsertValid
 public class UserInsertDTO extends UserDTO {
 
 	private static final long serialVersionUID = 1L;
