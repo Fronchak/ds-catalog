@@ -2,6 +2,8 @@ package com.fronchak.dscatalog.api.controllers;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +36,7 @@ public class UserController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<UserDTO> save(@RequestBody UserInsertDTO insertDTO) {
+	public ResponseEntity<UserDTO> save(@Valid @RequestBody UserInsertDTO insertDTO) {
 		UserDTO dto = service.save(insertDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
@@ -42,7 +44,7 @@ public class UserController {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<UserDTO> update(@RequestBody UserDTO dto, @PathVariable Long id) {
+	public ResponseEntity<UserDTO> update(@RequestBody UserDTO dto, @Valid @PathVariable Long id) {
 		dto = service.update(dto, id);
 		return ResponseEntity.ok().body(dto);
 	}
