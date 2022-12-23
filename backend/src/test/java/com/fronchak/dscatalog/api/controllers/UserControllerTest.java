@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fronchak.dscatalog.api.dtos.UserDTO;
+import com.fronchak.dscatalog.api.dtos.UserInsertDTO;
 import com.fronchak.dscatalog.api.dtos.UserUpdateDTO;
 import com.fronchak.dscatalog.domain.exceptions.ResourceNotFoundException;
 import com.fronchak.dscatalog.domain.services.UserService;
@@ -44,6 +45,8 @@ public class UserControllerTest {
 	@MockBean
 	private UserService service;
 
+	
+	
 	@Test
 	public void findByIdShouldReturnDTOWhenIdExists() throws Exception {
 		UserDTO dto = UserMocksFactory.mockUserDTO();
@@ -158,5 +161,22 @@ public class UserControllerTest {
 		result.andExpect(jsonPath("$.content[0].firstName").value("Mock firstName 0"));
 		result.andExpect(jsonPath("$.content[1].id").value(1L));
 		result.andExpect(jsonPath("$.content[1].firstName").value("Mock firstName 1"));
+	}
+	
+	@Test
+	public void saveShouldReturnErrorWhenFirstNameIsEmpty() throws Exception {
+		UserInsertDTO insertDTO = UserMocksFactory.mockUserInsertDTO(0);
+		insertDTO.setFirstName(null);
+		
+		when(service.save(any())).thenReturn(new UserInsertDTO());
+		
+		String jsonPath = objectMapper.writeValueAsString(insertDTO);
+		
+		ResultActions result = mockMvc.perform(post("/api/users")
+				.content(jsonPath)
+				.accept(mediaType)
+				.contentType(mediaType));
+	
+		result.andExpect(status().isOk());
 	}
 }
