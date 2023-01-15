@@ -1,0 +1,35 @@
+.main-nav-container .container-fluid {
+  padding-left: 3em;
+  padding-right: 3em;
+}
+
+.nav-logo-text,
+.nav-logo-text:hover {
+  color: #fff;
+}
+
+.main-menu {
+  display: flex;
+  font-size: 1.2em;
+  width: 380px;
+  justify-content: space-between;
+}
+
+.main-menu a {
+  display: inline-block;
+  padding: 0.8em 0;
+  color: #FFF;
+  opacity: 0.5;
+  transition: 0.3s;
+}
+
+.main-menu a:hover {
+  color: #FFF;
+  opacity: 1;
+}
+
+.main-menu a.active {
+  color: #FFF;
+  opacity: 1;
+  font-weight: bold;
+}
