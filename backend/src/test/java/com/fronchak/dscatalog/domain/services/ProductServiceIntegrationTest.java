@@ -55,7 +55,7 @@ public class ProductServiceIntegrationTest {
 	@Test
 	public void findAllPagedShouldReturnPage() {
 		PageRequest pageRequest = PageRequest.of(0, 10);
-		Page<ProductDTO> result = service.findAllPaged(pageRequest);
+		Page<ProductDTO> result = service.findAllPaged(0L, "", pageRequest);
 		assertFalse(result.isEmpty());
 		assertEquals(0, result.getNumber());
 		assertEquals(10, result.getSize());
@@ -65,14 +65,14 @@ public class ProductServiceIntegrationTest {
 	@Test
 	public void findAllPagedShouldReturnEmptyPageWhenPageDoesNotExist() {
 		PageRequest pageRequest = PageRequest.of(50, 10);
-		Page<ProductDTO> result = service.findAllPaged(pageRequest);
+		Page<ProductDTO> result = service.findAllPaged(0L, "", pageRequest);
 		assertTrue(result.isEmpty());
 	}
 	
 	@Test
 	public void findAllPagedShouldReturnSortedPageWhenSortByName() {
 		PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("name"));
-		Page<ProductDTO> result = service.findAllPaged(pageRequest);
+		Page<ProductDTO> result = service.findAllPaged(0L, "", pageRequest);
 		List<ProductDTO> list = result.getContent();
 		
 		assertEquals("Macbook Pro", list.get(0).getName());

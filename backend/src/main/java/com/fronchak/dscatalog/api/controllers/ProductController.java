@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -35,8 +36,20 @@ public class ProductController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<Page<ProductDTO>> findAllPaged(Pageable pageable) {
-		Page<ProductDTO> dtos = service.findAllPaged(pageable);
+	public ResponseEntity<Page<ProductDTO>> findAllPaged(
+			@RequestParam(value = "categoryId", defaultValue = "0") Long categoryId,
+			@RequestParam(value = "filter", defaultValue = "") String filter,
+			Pageable pageable) {
+		Page<ProductDTO> dtos = service.findAllPaged(categoryId, filter.trim(), pageable);
+		return ResponseEntity.ok().body(dtos);
+	}
+	
+	@GetMapping(value = "/postgree")
+	public ResponseEntity<Page<ProductDTO>> findAllPagedPostgree(
+			@RequestParam(value = "categoryId", defaultValue = "0") Long categoryId,
+			@RequestParam(value = "filter", defaultValue = "") String filter,
+			Pageable pageable) {
+		Page<ProductDTO> dtos = service.findAllPagedPostgree(categoryId, filter.trim(), pageable);
 		return ResponseEntity.ok().body(dtos);
 	}
 	

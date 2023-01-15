@@ -38,7 +38,7 @@ public class ProductMapper implements Serializable {
 	
 	public Page<ProductDTO> convertPageEntityToPageDTO(Page<Product> entities) {
 		return entities
-				.map(entity -> convertEntityToDTO(entity));
+				.map(entity -> convertEntityToDTO(entity, entity.getCategories()));
 	}
 	
 	public void convertDTOToEntity(ProductDTO dto, Product entity) {

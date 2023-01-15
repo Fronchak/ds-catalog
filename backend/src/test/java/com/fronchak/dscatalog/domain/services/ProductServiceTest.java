@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
@@ -28,6 +29,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fronchak.dscatalog.api.dtos.ProductDTO;
 import com.fronchak.dscatalog.api.mappers.ProductMapper;
+import com.fronchak.dscatalog.domain.entities.Category;
 import com.fronchak.dscatalog.domain.entities.Product;
 import com.fronchak.dscatalog.domain.exceptions.DatabaseException;
 import com.fronchak.dscatalog.domain.exceptions.ResourceNotFoundException;
@@ -119,10 +121,10 @@ public class ProductServiceTest {
 		Page<Product> products = ProductMockFactory.mockProductPage();
 		Page<ProductDTO> dtos = ProductMockFactory.mockProductDTOPage();
 		
-		when(repository.findAll((Pageable) any())).thenReturn(products);
+		when(repository.findFiltered(any(), any(), any())).thenReturn(products);
 		when(mapper.convertPageEntityToPageDTO(products)).thenReturn(dtos);
 		
-		Page<ProductDTO> results = service.findAllPaged(any());
+		Page<ProductDTO> results = service.findAllPaged(eq(0L), eq(""), any());
 		
 		ProductDTO expected = ProductMockFactory.mockProductDTO();
 		ProductDTO result = results.getContent().get(0);
