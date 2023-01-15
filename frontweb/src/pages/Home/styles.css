@@ -1,22 +1,19 @@
 .home-container {
   padding: 10px;
-  border: 1px solid red;
   text-align: center;
 }
 
 .home-container h1 {
   font-size: 1.6em;
   color: #263238;
+  margin: 0 auto;
 }
 
 .home-image-container {
   padding: 50px 15px;
-  border: 1px solid red;
-
 }
 
 .home-content-container {
-  border: 1px solid red;
   order: 2;
   padding: 0 10px 60px 10px;
 }
@@ -31,15 +28,15 @@
 .home-image-container svg {
   display: block;
   margin: 0 auto;
-  max-width: 100%;
+  width: 100%;
   height: auto;
+  max-width: 506px;
 }
 
 .home-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: 1px solid red;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
   background-color: #FFF;
@@ -47,5 +44,114 @@
 
 .button-icon-container {
   padding: 0 0.5em;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
+@media (min-width: 576px) {
+  .home-container {
+    padding: 20px;
+    font-size: 30px;
+  }
+
+  .home-image-container {
+    padding: 100px 15px;
+  }
+}
+
+@media (min-width: 768px) {
+  .home-container {
+    padding: 20px;
+    font-size: 35px;
+  }
+
+  .home-image-container {
+    padding: 100px 20px;
+  }
+
+  .home-content-container {
+    padding: 20px 20px 60px 20px;
+  }
+}
+
+@media (min-width: 992px) {
+  .home-container {
+    padding: 40px;
+    font-size: 45px;
+  }
+
+  .home-container h1 {
+    width: 75%;
+
+  }
+
+  .home-image-container {
+    padding: 125px 20px;
+  }
+
+  .home-content-container {
+    padding: 20px 20px 150px 20px;
+  }
+
+  .home-content-container p {
+    color: #9E9E9E;
+    width: 80%;
+    font-size: 0.9em;
+    margin: 30px auto 47px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .home-container {
+    padding: 40px;
+    font-size: 30px;
+  }
+
+  .home-card {
+    flex-direction: row;
+    align-items: center;
+    padding: 30px;
+    height: 75vh;
+  }
+
+  .home-content-container {
+    flex: 3 0 0;
+  }
+
+  .home-image-container {
+    flex: 2 0 0;
+  }
+
+  .home-content-container {
+    order: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 20px;
+    text-align: left;
+  }
+
+  .home-content-container h1,
+  .home-content-container p {
+    margin-left: 10px;
+    width: 90%;
+  }
+
+  .home-content-container p {
+    margin-bottom: 5em;
+    font-size: 0.8em;
+  }
+
+  .home-content-container .button-icon-container {
+    margin-left: 10px;
+    padding: 0;
+    width: 80%
+  }
+}
+
+@media (min-width: 1400px) {
+  .home-card {
+    height: 90vh;
+  }
+
+}
