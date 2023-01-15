@@ -1,0 +1,44 @@
+#btn-icon {
+  width: 100%;
+  color: #FFF;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.9em;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  border-radius: 0;
+  border: none;
+  background-color: transparent;
+}
+
+#btn-icon * {
+  display: inline-block;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #407BFF;
+}
+
+#btn-icon span {
+  flex: 6 1 0;
+  border: 1px solid #407BFF;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+#btn-icon i {
+  flex: 1 1 0;
+  font-size: 1.4em;
+  background-color: #1C49AA;
+  border: 1px solid #1C49AA;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+
+
+
