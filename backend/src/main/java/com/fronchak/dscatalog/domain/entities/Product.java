@@ -30,6 +30,8 @@ public class Product implements Serializable {
 	@Column(columnDefinition = "TEXT")
 	private String description;
 	private Double price;
+	
+	@Column(columnDefinition = "TEXT")
 	private String imgUrl;
 	
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")

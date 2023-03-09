@@ -12,9 +12,7 @@ import javax.validation.constraints.Size;
 public class ProductDTO {
 
 	private Long id;
-	
-	@Size(min = 3, max = 60, message = "Name must has between 3 and 60 characteres")
-	@NotBlank(message = "Name must be specified")
+
 	private String name;
 	private String description;
 	

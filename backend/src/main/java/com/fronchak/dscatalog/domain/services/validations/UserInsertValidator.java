@@ -13,8 +13,6 @@ import com.fronchak.dscatalog.domain.entities.User;
 import com.fronchak.dscatalog.domain.exceptions.FieldMessage;
 import com.fronchak.dscatalog.domain.repositories.UserRepository;
 
-
-
 public class UserInsertValidator implements ConstraintValidator<UserInsertValid, UserInsertDTO> {
 	
 	@Autowired

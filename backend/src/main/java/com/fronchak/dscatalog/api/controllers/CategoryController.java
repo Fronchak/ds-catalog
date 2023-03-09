@@ -1,6 +1,7 @@
 package com.fronchak.dscatalog.api.controllers;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,9 +28,15 @@ public class CategoryController {
 	private CategoryService service;
 	
 	@GetMapping
-	public ResponseEntity<Page<CategoryDTO>> findAll(Pageable pageable) {;		
+	public ResponseEntity<Page<CategoryDTO>> findAllPaged(Pageable pageable) {;		
 		Page<CategoryDTO> categories = service.findAllPaged(pageable);
 		return ResponseEntity.ok(categories);
+	}
+	
+	@GetMapping(value = "/all")
+	public ResponseEntity<List<CategoryDTO>> findAllList() {
+		List<CategoryDTO> entities = service.findAll();
+		return ResponseEntity.ok().body(entities);
 	}
 	
 	@GetMapping(value = "/{id}")

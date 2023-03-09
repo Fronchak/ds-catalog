@@ -1,5 +1,7 @@
 package com.fronchak.dscatalog.domain.services;
 
+import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,12 @@ public class CategoryService {
 	public Page<CategoryDTO> findAllPaged(Pageable pageable) {
 		Page<Category> entities = repository.findAll(pageable);
 		return mapper.convertEntityPageToDTOPage(entities);
+	}
+	
+	@Transactional(readOnly = true)
+	public List<CategoryDTO> findAll() {
+		List<Category> entities = repository.findAll();
+		return mapper.convertEntityListToDTOList(entities);
 	}
 	
 	public CategoryDTO findById(Long id) {

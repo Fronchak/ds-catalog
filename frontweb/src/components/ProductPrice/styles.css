@@ -1,0 +1,23 @@
+.price-container {
+  display: flex;
+}
+
+.price-currency {
+  color: #9E9E9E;
+  padding-top: 7px;
+  padding-right: 4px;
+}
+
+.full-price {
+  font-size: 30px;
+  font-weight: bold;
+  color: #407BFF;
+  align-self: flex-end;
+}
+
+.price-cents {
+  color: #407BFF;
+  align-self: flex-end;
+  font-weight: bold;
+  padding-bottom: 5px;
+}
